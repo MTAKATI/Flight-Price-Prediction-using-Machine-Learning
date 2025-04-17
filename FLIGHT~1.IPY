@@ -1,0 +1,439 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "8b635c69",
+   "metadata": {},
+   "source": [
+    "#          **Flight Price Prediction using Machine Learning**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6e19d904",
+   "metadata": {},
+   "source": [
+    "## 🛫 **Project Overview: Flight Price Prediction Using Linear Regression**\n",
+    "\n",
+    "### 📌 Objective\n",
+    "The goal of this project is to develop a predictive model that estimates flight ticket prices based on several features using **Linear Regression**. By analyzing various factors such as airline, source and destination cities, time of purchase, departure and arrival times, we aim to understand the patterns affecting flight prices and build a reliable model to forecast future prices.\n",
+    "\n",
+    "---\n",
+    "\n",
+    "### 📊 Dataset Description\n",
+    "The dataset comprises **12 variables**, where **`Price`** is the **target variable**. Key features include:\n",
+    "\n",
+    "- Airline  \n",
+    "- Source City  \n",
+    "- Destination City  \n",
+    "- Departure Time  \n",
+    "- Arrival Time  \n",
+    "- Class  \n",
+    "- Duration  \n",
+    "- Number of Stops  \n",
+    "- Days Left  \n",
+    "- Additional variables related to route and schedule  \n",
+    "\n",
+    "This dataset provides comprehensive information to analyze and model flight pricing trends.\n",
+    "\n",
+    "---\n",
+    "\n",
+    "### 🧪 Project Tasks\n",
+    "\n",
+    "#### 1. Hypothesis-Driven Exploratory Data Analysis (EDA)\n",
+    "- Investigate if **flight prices vary by airline** for the same route.\n",
+    "- Analyze how **ticket prices change when purchased 1–2 days before departure**.\n",
+    "- Examine the influence of **departure and arrival times** on ticket pricing.\n",
+    "- Assess the **distribution of the `Price`** variable and remove outliers to improve model performance.\n",
+    "\n",
+    "#### 2. Model Building\n",
+    "- **Model m1**: Build a **Linear Regression model** using all features.\n",
+    "- Use model coefficients to **select top 5 important features**.\n",
+    "- **Model m2**: Rebuild the regression model with these features using **Statsmodels**.\n",
+    "- Compare **R² and Adjusted R²** of m1 and m2.\n",
+    "\n",
+    "#### 3. Model Comparison\n",
+    "- Build models using both **Scikit-learn** and **Statsmodels**.\n",
+    "- Compare performance metrics, interpretability, and insights from both frameworks.\n",
+    "\n",
+    "#### 4. Insight Generation\n",
+    "- Analyze the **impact of airline, booking time, and schedule** on flight ticket pricing.\n",
+    "- Derive actionable insights for travelers and airline companies.\n",
+    "\n",
+    "---\n",
+    "\n",
+    "### 📈 Expected Outcomes\n",
+    "- A cleaned and processed dataset optimized for regression modeling.\n",
+    "- A well-performing linear regression model capable of predicting flight prices.\n",
+    "- Deeper understanding of factors driving airfare fluctuations.\n",
+    "- Comparison between different modeling techniques to validate findings.\n",
+    "\n",
+    "---"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "469c72bd",
+   "metadata": {},
+   "source": [
+    "## **Data Dictionary** \n",
+    "\n",
+    "* 1) Airline: The name of the airline company is stored in the airline column. It is a categorical feature having 6 different airlines.\n",
+    "* 2) Flight: Flight stores information regarding the plane's flight code. It is a categorical feature.\n",
+    "* 3) Source City: City from which the flight takes off. It is a categorical feature having 6 unique cities.\n",
+    "* 4) Departure Time: This is a derived categorical feature obtained created by grouping time periods into bins. It stores information about the departure time and have 6 unique time labels.\n",
+    "* 5) Stops: A categorical feature with 3 distinct values that stores the number of stops between the source and destination cities.\n",
+    "* 6) Arrival Time: This is a derived categorical feature created by grouping time intervals into bins. It has six distinct time labels and keeps information about the arrival time.\n",
+    "* 7) Destination City: City where the flight will land. It is a categorical feature having 6 unique cities.\n",
+    "* 8) Class: A categorical feature that contains information on seat class; it has two distinct values: Business and Economy.\n",
+    "* 9) Duration: A continuous feature that displays the overall amount of time it takes to travel between cities in hours.\n",
+    "* 10) Days Left: This is a derived characteristic that is calculated by subtracting the trip date by the booking date.\n",
+    "* 11) Price: Target variable stores information of the ticket price."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1094cb96",
+   "metadata": {},
+   "source": [
+    "## **Approach**\n",
+    "* Install Packages\n",
+    "* Import Libraries\n",
+    "* Data Reading from Different Sources\n",
+    "* Exploratory Data Analysis\n",
+    "* Correlation\n",
+    "* Relationship between Cost and Score\n",
+    "* Train - Test Split\n",
+    "* Linear Regression\n",
+    "* Model Summary\n",
+    "* Prediction on Test Data\n",
+    "* Diagnostic and Remedies"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ee2f9cf6",
+   "metadata": {},
+   "source": [
+    "## **Important Libraries**\n",
+    "* **pandas**: pandas is a fast, powerful, flexible, and easy-to-use open-source data analysis and manipulation tool built on top of the Python programming language.\n",
+    "* **NumPy**: The fundamental package for scientific computing with Python. Fast and versatile, the NumPy vectorization, indexing, and broadcasting concepts are the de-facto standards of array computing today. NumPy offers comprehensive mathematical functions, random number generators, linear algebra routines, Fourier transforms, and more. Pandas and NumPy are together used for most of the data analysis and manipulation in Python.\n",
+    "* **Matplotlib**: Is a comprehensive library for creating static, animated, and interactive visualizations in Python.\n",
+    "* **Seaborn**: Is a Python data visualization library based on matplotlib. It provides a higer-level interface for drawing attractive and informative statistical graphics.\n",
+    "* **Scikit-learn**: Simple and efficient tools for predictive data analysis accessible to everybody and reusable in various contexts. It is built on NumPy, SciPy, and matplotlib to support machine learning in Python.\n",
+    "* **Statsmodel**: statsmodel is a Python module that provides classes and functions for the estimation of many different statistical models, as well as for conducting statistical tests and statistical data exploration.\n",
+    "* **SciPy**: SciPy provides algorithms for optimization, integration, interpolation, eigenvalue problems, algebraic equations, differential equations, statistics, and many other classes of problems."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7dd12e38",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import warnings\n",
+    "warnings.filterwarnings('ignore')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e3b026cf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#install required packages with versions\n",
+    "\n",
+    "!pip install numpy==1.21.2 --quiet\n",
+    "!pip install seaborn==0.11.1 --quiet\n",
+    "!pip install matplotlib==3.1.1 --quiet\n",
+    "!pip install statsmodels==0.12.2 --quiet\n",
+    "!pip install pandas==1.2.4 --quiet\n",
+    "!pip install scipy==1.6.3 --quiet\n",
+    "!pip install scikit_learn==1.0.2 --quiet"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "50bfdcfb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "conda update matplotlib"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "2396a47b",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ModuleNotFoundError",
+     "evalue": "No module named 'pandas'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
+      "Cell \u001b[1;32mIn[1], line 1\u001b[0m\n\u001b[1;32m----> 1\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mpandas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mpd\u001b[39;00m\n\u001b[0;32m      2\u001b[0m \u001b[38;5;28mprint\u001b[39m(pd\u001b[38;5;241m.\u001b[39m__version__)\n",
+      "\u001b[1;31mModuleNotFoundError\u001b[0m: No module named 'pandas'"
+     ]
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "print(pd.__version__)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "67568b54",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sys\n",
+    "print(sys.executable)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "d1b61bbd",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ModuleNotFoundError",
+     "evalue": "No module named 'pandas'",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[1;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[1;31mModuleNotFoundError\u001b[0m                       Traceback (most recent call last)",
+      "Cell \u001b[1;32mIn[2], line 3\u001b[0m\n\u001b[0;32m      1\u001b[0m \u001b[38;5;66;03m# import required packages\u001b[39;00m\n\u001b[1;32m----> 3\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mpandas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mpd\u001b[39;00m\n\u001b[0;32m      4\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mnumpy\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mnp\u001b[39;00m\n\u001b[0;32m      5\u001b[0m \u001b[38;5;28;01mimport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mmatplotlib\u001b[39;00m\u001b[38;5;21;01m.\u001b[39;00m\u001b[38;5;21;01mpyplot\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mas\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;21;01mplt\u001b[39;00m\n",
+      "\u001b[1;31mModuleNotFoundError\u001b[0m: No module named 'pandas'"
+     ]
+    }
+   ],
+   "source": [
+    "# import required packages\n",
+    "\n",
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "import statsmodels.api as sm\n",
+    "import seaborn as sns\n",
+    "from scipy import stats\n",
+    "import scipy\n",
+    "from matplotlib.pyplot import figure\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "75cb923c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sys\n",
+    "print(sys.executable)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b27fd7bc",
+   "metadata": {},
+   "source": [
+    "## **Data Reading**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "14911214",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load the csv data\n",
+    "csv_file_path = \"C:/Users/HP/OneDrive - University of Cape Town/Desktop/Professional Expectations/2. Project Pro/Data Science/1st level/1. Linear Regression Model Project in Python for Beginners Part 1/Flight Price Prediction using Machine Learning/Flight_.csv\"\n",
+    "df = pd.read_csv(csv_file_path)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ccf9a383",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# view top 5 entries from the soccer data\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31909a1d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6277d9d4",
+   "metadata": {},
+   "source": [
+    "## **Exploratory Data Analysis**\n",
+    "Exploratory Data Analysis, commonly known as EDA, is a technique to analyze the data with visuals. It involves using statistics and visual techniques to identify particular trends in data. \n",
+    " \n",
+    "It is used to understand data patterns, spot anomalies, check assumptions, etc. The main purpose of EDA is to help look into the data before making any hypothesis about it.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8c87a2cc",
+   "metadata": {},
+   "source": [
+    "## **Dataframe Information**\n",
+    " \n",
+    " \n",
+    "The [dataframe.info()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.info.html) method prints information about the DataFrame, including the index dtype and columns, non-null values, and memory usage.\n",
+    " \n",
+    "It can be used to get basic info, look for missing values, and get a sense of each variable's format.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fc571200",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0767a920",
+   "metadata": {},
+   "source": [
+    "There are 300 153 rows and 12 columns in the flight Dataset.\n",
+    "\n",
+    "Observer that there are no null values in the dataset.\n",
+    "\n",
+    "We have 8 columns that are \"object\", 3 columns are \"int64\" and 1 column that is \"float64\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "042ec94b",
+   "metadata": {},
+   "source": [
+    "## **Descriptive statistic**\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "596a0028",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# descriptive statistics for quantitative columns\n",
+    "df.describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ba0190c2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# descriptive statistics for \"Objects\"\n",
+    "df.describe(include=['object'] )"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "029d3132",
+   "metadata": {},
+   "source": [
+    "## **Correlation**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "73455690",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.corr()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a5bc00be",
+   "metadata": {},
+   "source": [
+    "The variable duration is related to the target variable with price"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a14e3bce",
+   "metadata": {},
+   "source": [
+    "## **Relationship between Price and Duration**\n",
+    "Duration and Price have a 20% correlation, making it a weak positive relationship.\n",
+    " \n",
+    "Duration can be selected as the predictor variable for simple linear regression since the scatter plot between them will demonstrate a linear relationship"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "afa2409f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Lets plot Price vs. Duration\n",
+    "\n",
+    "plt.figure(figsize=(8, 6), dpi=80)\n",
+    "plt.scatter(df['duration'], df['price'])\n",
+    "\n",
+    "# label\n",
+    "plt.xlabel(\"Duration\")\n",
+    "plt.ylabel(\"Price\")\n",
+    "plt.title(\"Scatter plot between Price and Duration\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "datasci",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.10.16"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
