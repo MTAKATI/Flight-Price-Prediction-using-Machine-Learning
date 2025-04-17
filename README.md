@@ -81,5 +81,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## 🙋‍♂️ Author
 
-- **Your Name** – [@yourgithub](https://github.com/yourgithub)
+- **Sandiso Mtakati** – [@yourgithub](https://github.com/MTAKATI)
 ```
